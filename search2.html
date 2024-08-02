@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DEPARTEMEN DALAM NEGERI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+      margin: 0;
+      box-sizing: border-box;
+      color: #333;
+    }
+    #header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #007BFF;
+      padding: 10px 20px;
+      color: white;
+    }
+    #header img {
+      height: 80px;
+      margin-right: 15px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    #search-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    #search-query {
+      width: 50%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    #search-button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      border: 1px solid #0056b3;
+      background-color: #0056b3;
+      color: white;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #search-button:hover {
+      background-color: #003f7f;
+    }
+    #data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+      background-color: white;
+    }
+    #data-table th, #data-table td {
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    #data-table th {
+      background-color: #f8f8f8;
+    }
+    #data-table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    #data-table tr:hover {
+      background-color: #eaeaea;
+    }
+    a {
+      text-decoration: none;
+      color: #007BFF;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    #footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
+  <script>
+    function search() {
+      var query = document.getElementById('search-query').value;
+      var url = 'https://script.google.com/macros/s/AKfycbxxremN7CBLLwHAXV-7Vyw-dw_aby3NE9DOe9MkERXmACNY7eMHle7tHYkIsfvgE2zSjg/exec?query=' + encodeURIComponent(query);
+      
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, true);
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          try {
+            var data = JSON.parse(xhr.responseText);
+            displayData(data);
+          } catch (e) {
+            console.error('Error parsing JSON response:', e);
+            alert('Terjadi kesalahan dalam menampilkan data.');
+          }
+        } else {
+          alert('Terjadi kesalahan: ' + xhr.status);
+        }
+      };
+      xhr.onerror = function() {
+        alert('Permintaan gagal.');
+      };
+      xhr.send();
+    }
+
+    function displayData(data) {
+      var table = document.getElementById('data-table');
+      table.innerHTML = ''; // Hapus isi tabel sebelum menampilkan data
+
+      var header = document.createElement('tr');
+      header.innerHTML = '<th>Subjek</th><th>Keterangan</th><th>Tautan Link</th><th>Tanggal</th>';
+      table.appendChild(header);
+
+      if (data.length === 0) {
+        var row = document.createElement('tr');
+        row.innerHTML = '<td colspan="4">Tidak ada data ditemukan.</td>';
+        table.appendChild(row);
+      } else {
+        data.forEach(function(item) {
+          var row = document.createElement('tr');
+          row.innerHTML = '<td>' + item.subject + '</td>' +
+                           '<td>' + item.description + '</td>' +
+                           '<td><a href="' + item.link + '" target="_blank">Klik di sini</a></td>' +
+                           '<td>' + item.date + '</td>';
+          table.appendChild(row);
+        });
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="header">
+    <div>
+      <img src="C:\Users\offic\Desktop\PROYEK\New folder\images-removebg-preview (1).png" alt="Logo"> <!-- Ganti dengan URL logo Anda -->
+      <h1>DEPARTEMEN DALAM NEGERI</h1>
+    </div>
+    <div>
+      <p>Untuk layanan lebih lanjut, kunjungi <a href="#">website resmi</a>.</p>
+    </div>
+  </div>
+
+  <div id="search-container">
+    <input type="text" id="search-query" placeholder="Masukkan subjek pencarian">
+    <button id="search-button" onclick="search()">Search</button>
+  </div>
+  
+  <h2>Data yang Ditemukan</h2>
+  <table id="data-table"></table>
+
+  <div id="footer">
+    <p>© 2024 DEPARTEMEN DALAM NEGERI. Hak cipta dilindungi.</p>
+  </div>
+</body>
+</html>
